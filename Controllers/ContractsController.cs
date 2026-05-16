@@ -22,6 +22,27 @@ public class ContractsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+
+        // Kalau role vendor → hanya tampilkan kontrak milik vendor tersebut
+        if (userRole == "vendor" && userId != null)
+        {
+            var profile = await _context.Profiles.FindAsync(userId);
+            if (profile?.IdVendor == null)
+                return Ok(new List<KontrakDto>()); // vendor tanpa id_vendor → kosong
+
+            var vendorContracts = await _context.Kontraks
+                .Include(k => k.Vendor)
+                .Where(k => k.IdVendor == profile.IdVendor)
+                .OrderByDescending(k => k.CreatedAt)
+                .Select(k => MapToDto(k))
+                .ToListAsync();
+
+            return Ok(vendorContracts);
+        }
+
+        // Admin, PIC, Viewer → tampilkan semua kontrak
         var contracts = await _context.Kontraks
             .Include(k => k.Vendor)
             .OrderByDescending(k => k.CreatedAt)

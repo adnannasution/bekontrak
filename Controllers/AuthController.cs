@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,6 +24,7 @@ public class AuthController : ControllerBase
         _config = config;
     }
 
+    // ==================== LOGIN ====================
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
@@ -31,6 +33,9 @@ public class AuthController : ControllerBase
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             return Unauthorized(new { message = "Email atau password salah" });
+
+        if (!user.IsActive)
+            return Unauthorized(new { message = "Akun Anda belum diaktifkan. Hubungi admin." });
 
         var token = GenerateToken(user);
         return Ok(new AuthResponseDto
@@ -43,6 +48,8 @@ public class AuthController : ControllerBase
         });
     }
 
+    // ==================== REGISTER (public) ====================
+    // Self-register: role selalu 'user', isActive = false
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
@@ -54,22 +61,40 @@ public class AuthController : ControllerBase
         {
             Email = dto.Email,
             FullName = dto.FullName ?? dto.Email,
-            Role = dto.Role,
+            Role = "user",    // public register selalu user
+            IsActive = false,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
         };
 
         _context.Profiles.Add(user);
         await _context.SaveChangesAsync();
 
-        var token = GenerateToken(user);
-        return Ok(new AuthResponseDto
+        return Ok(new { message = "Registrasi berhasil. Tunggu admin mengaktifkan akun Anda.", id = user.Id });
+    }
+
+    // ==================== ADMIN CREATE USER ====================
+    // Admin bisa set role apapun termasuk vendor
+    [HttpPost("admin-register")]
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> AdminRegister([FromBody] RegisterDto dto)
+    {
+        var exists = await _context.Profiles.AnyAsync(u => u.Email == dto.Email);
+        if (exists)
+            return BadRequest(new { message = "Email sudah terdaftar" });
+
+        var user = new Profile
         {
-            Token = token,
-            Id = user.Id,
-            Email = user.Email,
-            FullName = user.FullName,
-            Role = user.Role
-        });
+            Email = dto.Email,
+            FullName = dto.FullName ?? dto.Email,
+            Role = !string.IsNullOrEmpty(dto.Role) ? dto.Role : "user",
+            IsActive = false,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
+        };
+
+        _context.Profiles.Add(user);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "User berhasil ditambahkan.", id = user.Id });
     }
 
     private string GenerateToken(Profile user)
