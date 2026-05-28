@@ -288,6 +288,25 @@ public class DokumenApproval
 
 
 
+public class DailyReport
+{
+    [Key]
+    public string IdReport { get; set; } = Guid.NewGuid().ToString();
+    [Required]
+    public DateTime TanggalLaporan { get; set; }
+    [Required]
+    public string Disiplin { get; set; } = string.Empty;
+    [Required]
+    public string Kategori { get; set; } = string.Empty;
+    [Required]
+    public string Deskripsi { get; set; } = string.Empty;
+    public string? StatusPekerjaan { get; set; }
+    public string? Catatan { get; set; }
+    public string? PengirimWa { get; set; }
+    public string? RawText { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
 public class KonfigurasiSistem
 {
     [Key]

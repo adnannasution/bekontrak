@@ -18,6 +18,7 @@ public class AppDbContext : DbContext
     public DbSet<Padi> Padis { get; set; }
     public DbSet<KonfigurasiSistem> KonfigurasiSistems { get; set; }
     public DbSet<DokumenApproval> DokumenApprovals { get; set; }
+    public DbSet<DailyReport> DailyReports { get; set; }
 
     
 
@@ -37,6 +38,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Padi>().ToTable("padi");
         modelBuilder.Entity<KonfigurasiSistem>().ToTable("konfigurasi_sistem");
         modelBuilder.Entity<DokumenApproval>().ToTable("dokumen_approval");
+        modelBuilder.Entity<DailyReport>().ToTable("daily_report");
         modelBuilder.Entity<DokumenApproval>(e => {
             e.Property(p => p.IdDokumen).HasColumnName("id_dokumen");
             e.Property(p => p.IdKontrak).HasColumnName("id_kontrak");
@@ -225,6 +227,20 @@ public class AppDbContext : DbContext
             e.Property(p => p.CatatanStatus).HasColumnName("catatan_status");
             e.Property(p => p.CreatedAt).HasColumnName("created_at");
             e.Property(p => p.UpdatedAt).HasColumnName("updated_at");
+        });
+
+        // Column name mapping - DailyReport
+        modelBuilder.Entity<DailyReport>(e => {
+            e.Property(p => p.IdReport).HasColumnName("id_report");
+            e.Property(p => p.TanggalLaporan).HasColumnName("tanggal_laporan");
+            e.Property(p => p.Disiplin).HasColumnName("disiplin");
+            e.Property(p => p.Kategori).HasColumnName("kategori");
+            e.Property(p => p.Deskripsi).HasColumnName("deskripsi");
+            e.Property(p => p.StatusPekerjaan).HasColumnName("status_pekerjaan");
+            e.Property(p => p.Catatan).HasColumnName("catatan");
+            e.Property(p => p.PengirimWa).HasColumnName("pengirim_wa");
+            e.Property(p => p.RawText).HasColumnName("raw_text");
+            e.Property(p => p.CreatedAt).HasColumnName("created_at");
         });
 
         // Column name mapping - KonfigurasiSistem
