@@ -95,6 +95,10 @@ public class Kontrak
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public string? SCurveData { get; set; }
+    // MPL, MPA, Masa Pemeliharaan
+    public DateTime? TanggalMpl { get; set; }
+    public DateTime? TanggalMpa { get; set; }
+    public int? MasaPemeliharaanHari { get; set; }
 
     // Navigation
     [ForeignKey("IdVendor")]

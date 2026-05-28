@@ -95,7 +95,10 @@ public class ContractsController : ControllerBase
             TanggalLkp = dto.TanggalLkp,
             SCurveData = dto.SCurveData,
             ContractDocuments = dto.ContractDocuments,
-            AmendmentDocuments = dto.AmendmentDocuments
+            AmendmentDocuments = dto.AmendmentDocuments,
+            TanggalMpl = dto.TanggalMpl,
+            TanggalMpa = dto.TanggalMpa,
+            MasaPemeliharaanHari = dto.MasaPemeliharaanHari
         };
 
         _context.Kontraks.Add(kontrak);
@@ -142,6 +145,9 @@ public class ContractsController : ControllerBase
         if (dto.SCurveData != null) kontrak.SCurveData = dto.SCurveData;
         kontrak.ContractDocuments = dto.ContractDocuments;
         kontrak.AmendmentDocuments = dto.AmendmentDocuments;
+        kontrak.TanggalMpl = dto.TanggalMpl;
+        kontrak.TanggalMpa = dto.TanggalMpa;
+        kontrak.MasaPemeliharaanHari = dto.MasaPemeliharaanHari;
         kontrak.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
@@ -233,6 +239,9 @@ public class ContractsController : ControllerBase
         SCurveData = k.SCurveData,
         CreatedAt = k.CreatedAt,
         UpdatedAt = k.UpdatedAt,
+        TanggalMpl = k.TanggalMpl,
+        TanggalMpa = k.TanggalMpa,
+        MasaPemeliharaanHari = k.MasaPemeliharaanHari,
         Vendor = k.Vendor == null ? null : new VendorDto
         {
             IdVendor = k.Vendor.IdVendor,
