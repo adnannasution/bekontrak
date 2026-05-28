@@ -96,6 +96,9 @@ public class KontrakDto
     public string? SCurveData { get; set; }
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+    public DateTime? TanggalMpl { get; set; }
+    public DateTime? TanggalMpa { get; set; }
+    public int? MasaPemeliharaanHari { get; set; }
     public VendorDto? Vendor { get; set; }
 }
 
@@ -129,7 +132,10 @@ public class CreateKontrakDto
     public string? SCurveData { get; set; }
     public string? ContractDocuments { get; set; }
     public string? AmendmentDocuments { get; set; }
-}
+    public DateTime? TanggalMpl { get; set; }
+    public DateTime? TanggalMpa { get; set; }
+    public int? MasaPemeliharaanHari { get; set; }
+    }
 
 public class UpdateKontrakDto : CreateKontrakDto { }
 
