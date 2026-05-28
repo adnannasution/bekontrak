@@ -122,10 +122,11 @@ public class AppDbContext : DbContext
             e.Property(p => p.ContractDocuments).HasColumnName("contract_documents");
             e.Property(p => p.AmendmentDocuments).HasColumnName("amendment_documents");
             e.Property(p => p.SCurveData).HasColumnName("s_curve_data");
+            e.Property(p => p.TanggalMpl).HasColumnName("tanggal_mpl");
             e.Property(p => p.TanggalMpa).HasColumnName("tanggal_mpa");
             e.Property(p => p.MasaPemeliharaanHari).HasColumnName("masa_pemeliharaan_hari");
             e.Property(p => p.CreatedAt).HasColumnName("created_at");
-            e.Property(p => p.CreatedAt).HasColumnName("created_at");
+            
             e.Property(p => p.UpdatedAt).HasColumnName("updated_at");
         });
 
