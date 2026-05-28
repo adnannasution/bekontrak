@@ -22,6 +22,7 @@ public class DailyReportController : ControllerBase
     public async Task<IActionResult> GetAll(
         [FromQuery] string? disiplin,
         [FromQuery] string? kategori,
+        [FromQuery] string? tagNumber,
         [FromQuery] string? status,
         [FromQuery] string? tanggal_dari,
         [FromQuery] string? tanggal_sampai)
@@ -33,6 +34,9 @@ public class DailyReportController : ControllerBase
 
         if (!string.IsNullOrEmpty(kategori))
             query = query.Where(r => r.Kategori == kategori);
+
+        if (!string.IsNullOrEmpty(tagNumber))
+            query = query.Where(r => r.TagNumber == tagNumber);
 
         if (!string.IsNullOrEmpty(status))
             query = query.Where(r => r.StatusPekerjaan == status);
@@ -52,6 +56,7 @@ public class DailyReportController : ControllerBase
                 tanggalLaporan  = r.TanggalLaporan,
                 disiplin        = r.Disiplin,
                 kategori        = r.Kategori,
+                tagNumber       = r.TagNumber,
                 deskripsi       = r.Deskripsi,
                 statusPekerjaan = r.StatusPekerjaan,
                 catatan         = r.Catatan,
