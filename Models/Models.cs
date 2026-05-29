@@ -300,6 +300,7 @@ public class DailyReport
     public string Kategori { get; set; } = string.Empty;
     [Required]
     public string Deskripsi { get; set; } = string.Empty;
+    public string? Direksi { get; set; }
     public string? TagNumber { get; set; }
     public string? StatusPekerjaan { get; set; }
     public string? Catatan { get; set; }

@@ -23,6 +23,7 @@ public class DailyReportController : ControllerBase
         [FromQuery] string? disiplin,
         [FromQuery] string? kategori,
         [FromQuery] string? tagNumber,
+        [FromQuery] string? direksi,
         [FromQuery] string? status,
         [FromQuery] string? tanggal_dari,
         [FromQuery] string? tanggal_sampai)
@@ -34,6 +35,9 @@ public class DailyReportController : ControllerBase
 
         if (!string.IsNullOrEmpty(kategori))
             query = query.Where(r => r.Kategori == kategori);
+    
+        if (!string.IsNullOrEmpty(direksi))
+            query = query.Where(r => r.Direksi == direksi);
 
         if (!string.IsNullOrEmpty(tagNumber))
             query = query.Where(r => r.TagNumber == tagNumber);
@@ -56,6 +60,7 @@ public class DailyReportController : ControllerBase
                 tanggalLaporan  = r.TanggalLaporan,
                 disiplin        = r.Disiplin,
                 kategori        = r.Kategori,
+                direksi         = r.Direksi,
                 tagNumber       = r.TagNumber,
                 deskripsi       = r.Deskripsi,
                 statusPekerjaan = r.StatusPekerjaan,

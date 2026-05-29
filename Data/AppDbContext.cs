@@ -235,6 +235,7 @@ public class AppDbContext : DbContext
             e.Property(p => p.TanggalLaporan).HasColumnName("tanggal_laporan");
             e.Property(p => p.Disiplin).HasColumnName("disiplin");
             e.Property(p => p.Kategori).HasColumnName("kategori");
+            e.Property(p => p.Direksi).HasColumnName("direksi");
             e.Property(p => p.TagNumber).HasColumnName("tag_number");
             e.Property(p => p.Deskripsi).HasColumnName("deskripsi");
             e.Property(p => p.StatusPekerjaan).HasColumnName("status_pekerjaan");
